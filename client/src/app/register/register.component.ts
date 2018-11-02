@@ -14,6 +14,6 @@ export class RegisterComponent implements OnInit {
 
 	post = () => {
 		console.log(this.registerData);
-		this.apiService.register(this.registerData);
+		this.authService.register(this.registerData);
 	}
 }
