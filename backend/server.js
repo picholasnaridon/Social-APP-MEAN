@@ -2,6 +2,8 @@ var express = require('express');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var jwt = require('jwt-simple');
+
 require('dotenv').config();
 var app = express();
 var User = require('./models/User');
@@ -28,14 +30,36 @@ app.get('/posts', function(req, res) {
 app.post('/register', function(req, res) {
 	var userData = req.body;
 	var user = new User(userData);
-	console.log(userData);
-	user.save((err, result) => {
+	user.save((err, user) => {
 		if (err) {
-			console.log('error saving user');
+			res.status(400).send({ message: 'An error occured!' });
 		} else {
-			res.send(200);
+			var payload = {};
+			var token = jwt.encode(payload, 'replaceWithUserID');
+			res.status(200).send({ token: token });
 		}
 	});
+});
+
+app.post('/Login', async (req, res) => {
+	var userData = req.body;
+
+	var user = await User.findOne({ email: userData.email });
+
+	if (!user) {
+		return res.status(401).send({ message: 'Email or Password Invalid' });
+	}
+
+	if (userData.password != user.password) {
+		return res.status(401).send({ message: 'Email or Password Invalid' });
+	}
+
+	var payload = {};
+
+	var token = jwt.encode(payload, 'replaceWithUserID');
+	console.log({ token: token, user: user });
+
+	res.status(200).send({ token: token });
 });
 
 mongoose.connect(process.env.MONGO_STRING, (err) => {

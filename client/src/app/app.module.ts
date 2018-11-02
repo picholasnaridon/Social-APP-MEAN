@@ -9,17 +9,24 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+
 import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 
 const routes = [
 	{
 		path: 'register',
 		component: RegisterComponent
+	},
+	{
+		path: 'login',
+		component: LoginComponent
 	}
 ];
 
 @NgModule({
-	declarations: [ AppComponent, MessagesComponent, RegisterComponent ],
+	declarations: [ AppComponent, MessagesComponent, RegisterComponent, LoginComponent ],
 	imports: [
 		BrowserModule,
 		MatInputModule,
@@ -31,7 +38,7 @@ const routes = [
 		MatToolbarModule,
 		RouterModule.forRoot(routes)
 	],
-	providers: [ ApiService ],
+	providers: [ ApiService, AuthService ],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule {}
