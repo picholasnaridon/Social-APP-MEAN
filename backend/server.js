@@ -27,6 +27,16 @@ app.get('/posts', function(req, res) {
 	res.send(posts);
 });
 
+app.get('/users', async (req, res) => {
+	try {
+		var users = await User.find({}, '-password -__v');
+		res.send(users);
+	} catch (error) {
+		console.log(error);
+		res.send(error);
+	}
+});
+
 app.post('/register', function(req, res) {
 	var userData = req.body;
 	var user = new User(userData);
