@@ -7,6 +7,7 @@ import { Http } from '@angular/http';
 export class ApiService {
 	messages = [];
 	users = [];
+	user = {};
 	constructor(private http: Http) {}
 
 	getMessages() {
@@ -19,5 +20,9 @@ export class ApiService {
 		this.http.get('http://localhost:3000/users').subscribe((res) => {
 			this.users = res.json();
 		});
+	}
+
+	getUser(id) {
+		return this.http.get(`http://localhost:3000/profile/` + id);
 	}
 }

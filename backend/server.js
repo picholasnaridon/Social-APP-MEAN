@@ -9,6 +9,8 @@ var app = express();
 var User = require('./models/User');
 var PORT = 3000 || process.env.PORT;
 
+mongoose.Promise = Promise;
+
 var posts = [
 	{
 		id: 1,
@@ -33,6 +35,15 @@ app.get('/users', async (req, res) => {
 		res.send(users);
 	} catch (error) {
 		console.log(error);
+		res.send(error);
+	}
+});
+
+app.get('/profile/:id', async (req, res) => {
+	try {
+		var user = await User.findById(req.params.id, '-password -__v');
+		res.send(user);
+	} catch (error) {
 		res.send(error);
 	}
 });
@@ -72,7 +83,7 @@ app.post('/Login', async (req, res) => {
 	res.status(200).send({ token: token });
 });
 
-mongoose.connect(process.env.MONGO_STRING, (err) => {
+mongoose.connect(process.env.MONGO_STRING, { useNewUrlParser: true }, (err) => {
 	if (!err) {
 		console.log('connected to mongo');
 	}
