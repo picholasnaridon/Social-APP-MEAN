@@ -5,10 +5,14 @@
   <mat-card-content>
     <mat-list>
       <mat-list-item>
-        {{profile?.email}}
+        Name: {{profile?.firstName}} {{profile?.lastName}}
       </mat-list-item>
       <mat-list-item>
-        {{profile?._id}}
+        <!-- add ? to make sure the data is available before rendering -->
+        Email: {{profile?.email}} 
+      </mat-list-item>
+      <mat-list-item>
+        ID: {{profile?.description}}
       </mat-list-item>
     </mat-list>
   </mat-card-content>

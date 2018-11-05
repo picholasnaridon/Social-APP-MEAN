@@ -3,6 +3,7 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
+var bcrypt = require('bcrypt-nodejs');
 
 require('dotenv').config();
 var app = express();
@@ -62,25 +63,25 @@ app.post('/register', function(req, res) {
 	});
 });
 
-app.post('/Login', async (req, res) => {
-	var userData = req.body;
+app.post('/login', async (req, res) => {
+	var loginData = req.body;
 
-	var user = await User.findOne({ email: userData.email });
+	var user = await User.findOne({ email: loginData.email });
 
 	if (!user) {
 		return res.status(401).send({ message: 'Email or Password Invalid' });
 	}
 
-	if (userData.password != user.password) {
-		return res.status(401).send({ message: 'Email or Password Invalid' });
-	}
+	bcrypt = bcrypt.compare(loginData.password, user.password, (err, isMatch) => {
+		if (!isMatch) return res.status(401).send({ message: 'Email or Password Invalid' });
 
-	var payload = {};
+		var payload = {};
 
-	var token = jwt.encode(payload, 'replaceWithUserID');
-	console.log({ token: token, user: user });
+		var token = jwt.encode(payload, 'replaceWithUserID');
+		console.log({ token: token, user: user });
 
-	res.status(200).send({ token: token });
+		res.status(200).send({ token: token });
+	});
 });
 
 mongoose.connect(process.env.MONGO_STRING, { useNewUrlParser: true }, (err) => {

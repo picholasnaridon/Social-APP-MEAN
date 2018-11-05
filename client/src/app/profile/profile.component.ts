@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
 	profile;
 
 	ngOnInit() {
+		// happens async so need to setup template to account for that
 		this.apiService.getUser(this.route.snapshot.params.id).subscribe((data) => {
 			this.profile = data.json();
 		});
