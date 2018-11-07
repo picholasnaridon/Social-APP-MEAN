@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jwt-simple');
 
 module.exports = {
-	register: function(req, res) {
+	register: (req, res) => {
 		var userData = req.body;
 		var user = new User(userData);
 		user.save((err, user) => {

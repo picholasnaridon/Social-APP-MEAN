@@ -6,15 +6,17 @@ import { Http } from '@angular/http';
 })
 export class AuthService {
 	messages = [];
+	route = 'http://localhost:3000';
+
 	constructor(private http: Http) {}
 
 	register(registerData) {
-		this.http.post('http://localhost:3000/register', registerData).subscribe((res) => {});
+		this.http.post(this.route + '/register', registerData).subscribe((res) => {});
 	}
 
 	login(loginData) {
 		console.log(loginData);
-		this.http.post('http://localhost:3000/login', loginData).subscribe((res) => {
+		this.http.post(this.route + '/login', loginData).subscribe((res) => {
 			console.log(res);
 			localStorage.setItem('token', res.json().token);
 		});

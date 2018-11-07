@@ -1,8 +1,20 @@
 var User = require('../models/User');
+var Post = require('../models/Post');
 
 module.exports = {
 	getPosts: (req, res) => {
-		res.send(posts);
+		res.send(res);
+	},
+
+	addPost: (req, res) => {
+		var post = new Post(req.body);
+
+		post.save((err, result) => {
+			if (err) {
+				return res.status(500).send({ message: 'error saving post' });
+			}
+			return res.sendStatus(200);
+		});
 	},
 
 	getUsers: async (req, res) => {
